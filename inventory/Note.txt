@@ -1,0 +1,18 @@
+inventory               
+
+ingredient_name =>
+ingre_quantity
+unit_price 
+
+order                     menu 
+                            item_name = char
+                            item_price 
+
+order_item (menu.item_name)
+order_quantity
+price 
+
+
+recipe
+menu_item =>(menu.item_name)
+inventory_id 
