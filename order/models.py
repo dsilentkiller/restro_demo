@@ -11,10 +11,11 @@ class Table(models.Model):
     def __str__(self):
         return f"{self.table_name}={self.floor}"
 
+
 class Order(models.Model):
     order_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
     order_quantity = models.FloatField()
     price = models.FloatField()
 
     def __str__(self):
-        return f"{self.order_item}={self.order_quantity} &{self.price}"
+        return f"Order{self.order_item}-Table {self.table_name}"

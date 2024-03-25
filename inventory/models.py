@@ -8,8 +8,6 @@ CHOICES = (('kg', 'kg'),
            ('plate', 'plate'),)
 
 
-
-
 class Inventory(models.Model):
     ingredient_name = models.CharField(max_length=100, default='maida')
     ingredient_quantity = models.FloatField()
@@ -18,5 +16,3 @@ class Inventory(models.Model):
 
     def __str__(self):
         return f"{self.ingredient_name}={self.ingredient_quantity} {self.ingredient_unit},{self.ingredient_price}"
-    
-

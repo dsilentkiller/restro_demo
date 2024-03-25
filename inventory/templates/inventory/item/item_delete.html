@@ -1,0 +1,36 @@
+{% extends 'inventory/base.html' %} {% block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+
+<div class="bg-gray-200 p-4">
+  <div class="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
+    <form method="POST">
+      {% csrf_token%}
+      <div class="card-title">
+        <h3 class="block text-gray-900 font-bold mb-3">Item</h3>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <!--name -->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="block text-gray-700 font-semibold mb-1">
+                Item Name
+              </label>
+              <div class="col-md-10">{{object.name}}</div>
+            </div>
+          </div>
+          <br />
+
+          <br />
+        </div>
+      </div>
+      <button type ='submit'class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">delete</buttom>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

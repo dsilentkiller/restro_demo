@@ -1,0 +1,80 @@
+
+{% extends 'inventory/base.html' %} {% block content %} 
+
+
+
+<div class="card max-w-80%  p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-400">
+
+  <div class="row">
+    <div class="flex items-center justify-between">
+        <h5 class="text-xl font-semibold">order List</h5>  
+        <a href="{% url 'order:order_create' %}" class="text-xl font-semibold text-grey-200 hover:underline hover:text-blue-00 ml-auto">
+         <h5>  Add order</h5>
+        </a>
+     
+      <form method="get" action="{% url 'order:order_search' %}%}" class="max-w-md mx-auto px-4 py-2 justify-end">
+        <div class="relative">
+            <input
+            type="search"
+            id="default-search"
+            name='q'
+            class="block w-full pl-10 pr-4 py-2 rounded-lg border-2 border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search Mockups, Logos..."
+            required
+          />
+          <button
+            type="submit"
+            class="absolute inset-y-0 right-0 px-4 py-2 bg-gray-300 text-gray-800 rounded-r-lg hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+          >
+            Search
+          </button>
+      
+        </div>
+      </form>
+    </div>
+      <div class="card-body">
+        <table class="table-auto w-full border-collapse border border-gray-400 table-bordered">
+          <th class="px-1 py-0">
+            <tr>
+              <th class="px-4 py-2 border px-4 py-2" >#</th>
+              <th class="px-4 py-2  border ">order item</th>
+
+              <th  class="px-4 py-2  border ">price</th>
+              <th class="px-4 py-2  border ">Order quantity</th>
+                 
+              <th col="3" class="px-0 py-0  border ">action</th>
+            </tr>
+          </th>
+          <tbody>
+            {% if object_list %} {% for order in object_list %}
+            <tr>
+              <td class="border px-4 py-2">{{ order.id}}</td>
+              <td class="border px-4 py-2">{{ order.order_item }}</td>
+             
+          
+              <td class="border px-4 py-2">{{ order.price }}</td>
+              <td  class="border px-4 py-2">{{ order.order_quantity }}</td>
+                    
+              <td>
+                <a  class="border px-4 py-2"  href="{% url 'order:order_update' order.id  %}"> Edit </a> 
+                <a class="border px-4 py-2"  href="{% url 'order:order_detail' order.id  %}"> View </a> 
+                <a  class="border px-4 py-2" href="{% url 'order:order_cancel' order.id %}" > Cancel </a>
+              </td>
+            </tr>
+          {% endfor %}
+          {% else %}
+            <tr><td colspan="8" class="border px-4 py-2">No order found</td></tr>
+          {% endif %}
+          
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+</div>
+<!-- /.content -->
+{% endblock %}
+
+

@@ -11,7 +11,7 @@ CHOICES = (('kg', 'kg'),
 class Menu(models.Model):
     food_name = models.CharField(max_length=100)
     price = models.FloatField()
-
+   
     def __str__(self):
         return f"{self.food_name}={self.price}"
     

@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'inventory',
-    'order',
-    'menu',
+    'app',
+    # 'restaurant',
+    # 'inventory',
+    # 'order',
+    # 'menu',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'restro_demo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,3 +126,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ======
+
+STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATICFILES_DIRS = [BASE_DIR/'static']
+STATIC_URL = '/static/'
+MEDIA_URL = 'images/'
+STATIC_DIRS = [BASE_DIR/'static']
+
+STATIC_ROOT = BASE_DIR/'staticfiles'
+MEDIA_ROOT = BASE_DIR/'images'
+LOGIN_REDIRECT_URL = '/'
+# AUTH_USER_MODEL = 'user.CustomUser'
+# LOGIN_URL = '/user/login/'
+######

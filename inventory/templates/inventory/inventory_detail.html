@@ -1,0 +1,68 @@
+{% extends './base.html' %} {% block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+
+<div class="bg-gray-200 p-4">
+  <div class="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
+    <form method="POST">
+      {% csrf_token%}
+      <div class="card-title">
+        <h3 class="block text-gray-900 font-bold mb-3">Inventory</h3>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <!--name -->
+
+          <!--ingredient_name -->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="block text-gray-900 font-semibold mb-3"
+                >Ingredient name
+              </label>
+              <p>{{object.ingredient_name}}</p>
+            </div>
+          </div>
+          <br />
+          <!--cinventory.ingredient_quantity -->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="block text-gray-900 font-semibold mb-1">
+                ingredient_Quantity :
+              </label>
+              <p>{{object.ingredient_quantity}}</p>
+            </div>
+          </div>
+          <br />
+          <!--cinventory conatct -->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="block text-gray-900 font-semibold mb-3">
+                ingredient_Price
+              </label>
+              <p>{{object.ingredient_price}}</p>
+            </div>
+          </div>
+          <br />
+
+          <!--cinventory ingredient_unit-->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="block text-gray-900 font-semibold mb-1"
+                >ingredient_Unit
+              </label>
+              <p>{{object.ingredient_unit}}</p>
+            </div>
+          </div>
+          <br />
+
+          <br />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
