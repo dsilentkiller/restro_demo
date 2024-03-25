@@ -9,7 +9,7 @@ class OrderForm(forms.ModelForm):
         fields = ('__all__')
         widgets = {
 
-            'order_item': forms.TextInput(attrs={'class': 'forms.control'}),
+            
 
             'order_quantity': forms.TextInput(attrs={'class': 'forms.control'}),
             'table_name': forms.TextInput(attrs={'class': 'forms.control'}),

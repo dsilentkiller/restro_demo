@@ -6,39 +6,43 @@ from django.urls import reverse_lazy
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-
+app_name = 'app'
 # ================================================Order -============================================================================
+
+
+def base(request):
+    return render(request, 'app/base.html')
 
 
 class OrderListView(ListView):
     model = Order
-    template_name = 'order/order_list.html'
+    template_name = 'app/order/order_list.html'
     success_url = reverse_lazy('app:order_list')
 
 
 class OrderCreateView(CreateView):
     model = Order
     form_class = OrderForm
-    template_name = 'order/order_form.html'
+    template_name = 'app/order/order_form.html'
     success_url = reverse_lazy('app:order_list')
-    Order = Order.objects.all()
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        Order_id = self.object.pk
+        order_id = self.object.pk
         try:
-            Order_item = Order.objects.get(pk=Order_id)
+            order_item = Order.objects.get(pk=order_id)
             # get associated menu item
-            menu_item = Order_item.Order_item
+            menu_item = order_item.order_item
             # get recipe for menu
-            recipes = RecipeRequirement.objects.filter(menu_item=menu_item)
+            recipes = RecipeRequirement.objects.filter(
+                menu_item_name=menu_item)  # recipe ko menu_item_name == orderitemko order_item anusar filter gareko
             # calculate ingredient usage and update available quantity
             for requirement in recipes:
                 ingredient = requirement.ingredient
-                quantity_used = requirement.quantity * Order_item.quantity
+                quantity_used = requirement.quantity * order_item.order_quantity
                 ingredient.available_qty -= quantity_used
                 ingredient.save()
-            total_price = Order_item.quantity * Order_item.Order_item .price
+            total_price = order_item.order_quantity * order_item.order_item .price
             context = {
                 'total_price': total_price
             }
@@ -48,7 +52,7 @@ class OrderCreateView(CreateView):
             return HttpResponseRedirect('/error/')
 
         # Redirect the user to a success page
-        return render(self.request, 'menu/calculation_ingredient.html', context)
+        return render(self.request, 'app/calculation_ingredient.html', context)
         # Order = form.save(commit=False)
         # Order.save()
         # # get Order item
@@ -61,30 +65,12 @@ class OrderCreateView(CreateView):
         #     inventory_item.quantity -= quantity_used
         #     inventory_item.save()
         # return super().form_valid(form)
-    # def form_valid(self, form):
-    #     response = super().form_valid(form)
-    #     Order = form.save(commit=False)
-    #     Order.save()
-
-    #     recipes = Recipe.objects.filter(food_name=Order.Order_item)
-    #     for recipe in recipes:
-    #         inventory_item = Inventory.objects.get(
-    #             ingredient_name=recipe.ingredient_name)
-    #         new_quantity = inventory_item.quantity - \
-    #             (recipe.quantity * Order.quantity)
-    #         if new_quantity >= 0:
-    #             inventory_item.quantity = new_quantity
-    #             inventory_item.save()
-    #         else:
-    #             print('insufficient quantity')
-
-    #     return response
 
 
 class OrderUpdateView(UpdateView):
     model = Order
     form_class = OrderForm
-    template_name = 'order/order_form.html'
+    template_name = 'app/order/order_form.html'
     success_url = reverse_lazy('app:order_list')
 
 
@@ -139,67 +125,66 @@ class RecipeRequirementDeleteView(DeleteView):
 
 class InventoryListView(ListView):
     model = Inventory
-    template_name = 'inventory/inventory__list.html'
-    success_url = reverse_lazy('app:order_list')
+    template_name = 'app/inventory/inventory_list.html'
+    success_url = reverse_lazy('app:inventory_list')
 
 
 class InventoryCreateView(CreateView):
     model = Inventory
     form_class = InventoryForm
-    template_name = 'inventory/inventory_form.html'
-    success_url = reverse_lazy('app:recipe_list')
-    Order = Order.objects.all()
+    template_name = 'app/inventory/inventory_form.html'
+    success_url = reverse_lazy('app:inventory_list')
 
 
 class InventoryUpdateView(UpdateView):
     model = Inventory
-    form_class = RecipeRequirementForm
-    template_name = 'inventory/inventory_form.html'
-    success_url = reverse_lazy('app:recipe_list')
+    form_class = InventoryForm
+    template_name = 'app/inventory/inventory_form.html'
+    success_url = reverse_lazy('app:inventory_list')
 
 
 class InventoryDetailView(DetailView):
     model = Inventory
     template_name = 'inventory/inventory_detail.html'
-    success_url = reverse_lazy('app:recipe_list')
+    success_url = reverse_lazy('app:inventory_list')
 
 
 class InventoryDeleteView(DeleteView):
     model = Inventory
     template_name = 'inventory/inventory_delete.html'
-    success_url = reverse_lazy('app:recipe_list')
+    success_url = reverse_lazy('app:inventory_list')
 
 # =========================== menu=======================================
 
 
 class MenuListView(ListView):
     model = Menu
-    template_name = 'menu/menu_list.html'
-    success_url = reverse_lazy('app:order_list')
+    template_name = 'app/menu/menu_list.html'
+    success_url = reverse_lazy('app:menu_list')
 
 
 class MenuCreateView(CreateView):
     model = Menu
     form_class = MenuForm
-    template_name = 'menu/menu_form.html'
-    success_url = reverse_lazy('app:recipe_list')
+    template_name = 'app/menu/menu_form.html'
+    success_url = reverse_lazy('app:menu_list')
     Order = Order.objects.all()
 
 
 class MenuUpdateView(UpdateView):
     model = Menu
     form_class = MenuForm
-    template_name = 'menu/menu_form.html'
-    success_url = reverse_lazy('app:recipe_list')
+    template_name = 'app/menu/menu_form.html'
+    success_url = reverse_lazy('app:menu_list')
 
 
 class MenuDetailView(DetailView):
     model = Menu
-    template_name = 'menu/menu_detail.html'
-    success_url = reverse_lazy('app:recipe_list')
+    template_name = 'app/menu/menu_detail.html'
+    success_url = reverse_lazy('app:menu_list')
 
 
 class MenuDeleteView(DeleteView):
     model = Menu
-    template_name = 'menu/menu_delete.html'
-    success_url = reverse_lazy('app:recipe_list')
+    template_name = 'app/menu/menu_delete.html'
+    success_url = reverse_lazy('app:menu_list')

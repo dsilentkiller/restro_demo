@@ -6,13 +6,14 @@ from django.conf.urls.static import static
 app_name = 'app'
 
 urlpatterns = [
+    path('', views.base, name='base'),
     # ======================= order=============
 
-    path('create/', views.MenuCreateView.as_view(), name='menu_create'),
+    path('menu/create/', views.MenuCreateView.as_view(), name='menu_create'),
     path('list/', views.MenuListView.as_view(), name='menu_list'),
-    path('update/<int:pk>',
+    path('menu/update/<int:pk>',
          views.MenuUpdateView.as_view(), name='menu_update'),
-    path('delete/<int:pk>', views.MenuDeleteView.as_view(),
+    path('menu/delete/<int:pk>', views.MenuDeleteView.as_view(),
          name='menu_delete'),
     #     path('item/search',
     #          views.ItemSearchView.as_view(), name='item_search'),
@@ -22,17 +23,17 @@ urlpatterns = [
     # ======================= inventory=============
 
     path('inventory/create/', views.InventoryCreateView.as_view(),
-         name='ingredient_create'),
+         name='inventory_create'),
     path('inventory/list/', views.InventoryListView.as_view(),
-         name='ingredient_list'),
-    #     path('inventory/update/<int:pk>',
-    #          views.InventoryUpdateView.as_view(), name='ingredient_update'),
-    #     path('inventory/delete/<int:pk>', views.InventoryDeleteView.as_view(),
-    #          name='ingredient_delete'),
+         name='inventory_list'),
+    path('inventory/update/<int:pk>',
+         views.InventoryUpdateView.as_view(), name='inventory_update'),
+    path('inventory/delete/<int:pk>', views.InventoryDeleteView.as_view(),
+         name='inventory_delete'),
     #     path('item/search',
     #          views.ItemSearchView.as_view(), name='item_search'),
     # path('inventory/search',
-    #      views.SearchView, name='ingredient_search'),
+    #      views.SearchView, name='inventory_search'),
 
 
 
@@ -52,10 +53,10 @@ urlpatterns = [
 
     # =======================menu=============
 
-    path('menu/create/', views.OrderCreateView.as_view(), name='menu_create'),
-    path('menu/list/', views.OrderListView.as_view(), name='menu_list'),
-    path('menu/update/<int:pk>',
-         views.OrderUpdateView.as_view(), name='menu_update'),
+    path('order/create/', views.OrderCreateView.as_view(), name='order_create'),
+    path('order/list/', views.OrderListView.as_view(), name='order_list'),
+    path('order/update/<int:pk>',
+         views.OrderUpdateView.as_view(), name='order_update'),
     #     path('order/delete/<int:pk>', views.OrderDeleteView.as_view(),
     #          name='order_delete'),
     #     path('item/search',
