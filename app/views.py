@@ -14,11 +14,11 @@ from app.serializers import MenuSerializers
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.auth.decorators import login_required
 app_name = 'app'
 # ================================================Order -============================================================================
 
-
+@login_required(login_url="/login")
 def base(request):
     return render(request, 'app/base.html')
 
