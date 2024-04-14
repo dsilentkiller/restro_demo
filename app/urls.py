@@ -3,10 +3,20 @@ from django.urls import path
 from app import views
 from django.conf import settings
 from django.conf.urls.static import static
+# from snippets.serializers import SnippetSerializer
+from django.http import Http404
+from rest_framework.views import APIView
 app_name = 'app'
 
 urlpatterns = [
     path('', views.base, name='base'),
+    ##############################################user authentication ##
+
+     # path('login', views.login, name='user_login'),
+    path('sign-up/', views.sign_up, name='sign_up'),
+
+
+    ########end user ####
     # ======================= order=============
 
     path('menu/create/', views.MenuCreateView.as_view(), name='menu_create'),
@@ -63,6 +73,9 @@ urlpatterns = [
     #     #          views.ItemSearchView.as_view(), name='item_search'),
     #     path('order/search',
     #          views.SearchView, name='order_search'),
+    ############### serializer urls###
+    path('menu/', views.MenuList.as_view()),
+    path('menu/<int:pk>/', views.MenuDetail.as_view()),
 
 
 ]

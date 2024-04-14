@@ -1,0 +1,13 @@
+ --> login logout ,loginrequiredmixin ->inheritance garne ra use garne 
+
+ login => logout url 
+ if request.user.isauthenticated :
+    request.user 
+ profile and logout 
+ #######
+resham
+resham@gmail.com
+DRnil@#123 pwd
+#####work it 
+username : asmi
+DRnil@#123 

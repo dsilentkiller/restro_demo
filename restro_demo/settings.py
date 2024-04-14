@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+
     'app',
+    'user',
     # 'restaurant',
     # 'inventory',
     # 'order',
@@ -138,7 +141,15 @@ STATIC_DIRS = [BASE_DIR/'static']
 
 STATIC_ROOT = BASE_DIR/'staticfiles'
 MEDIA_ROOT = BASE_DIR/'images'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'app/inventory/list/'
 # AUTH_USER_MODEL = 'user.CustomUser'
-# LOGIN_URL = '/user/login/'
+LOGOUT_REDIRECT_URL = 'login/'
+# restframework
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }
 ######

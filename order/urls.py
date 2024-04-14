@@ -58,7 +58,7 @@ urlpatterns = [
     path('search/',
          views.OrderListView.as_view(), name='order_search'),
 
-
+    path('create/login', views.LoginView.as_view(), name='user_login'),
 
 
 

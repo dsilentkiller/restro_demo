@@ -6,7 +6,8 @@ from order.forms import OrderForm, TableForm
 from menu.models import Recipe
 from inventory.models import Inventory
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render
+from django.contrib.auth.models import User
 # Create your views here.
 
 ######################## table ###########################
@@ -44,6 +45,12 @@ class TableDeleteView(DeleteView):
     success_url = reverse_lazy('order:table_list')
 
 # inventory search using function
+
+
+class LoginView(ListView):
+    model = User
+    # template_name = 'user/login.html'
+    success_url = reverse_lazy('order:order_create')
 
 
 class TableSearchView(ListView):
@@ -96,31 +103,31 @@ class OrderCreateView(CreateView):
     order = Order.objects.all()
 
     def form_valid(self, form):
-        response=super().form_valid(form)
+        response = super().form_valid(form)
         order_id = self.object.pk
         try:
             order_item = Order.objects.get(pk=order_id)
-            #get associated menu item 
-            menu_item = order_item.order_item 
-            #get recipe for menu 
-            recipes =Recipe.objects.filter(menu_item=menu_item)
-            #calculate ingredient usage and update available quantity
+            # get associated menu item
+            menu_item = order_item.order_item
+            # get recipe for menu
+            recipes = Recipe.objects.filter(menu_item=menu_item)
+            # calculate ingredient usage and update available quantity
             for requirement in recipes:
-                ingredient =requirement.ingredient
-                quantity_used =requirement.quantity * order_item.quantity
+                ingredient = requirement.ingredient
+                quantity_used = requirement.quantity * order_item.quantity
                 ingredient.available_qty -= quantity_used
                 ingredient.save()
-            total_price  = order_item.quantity * order_item.order_item .price
-            context ={
-                'total_price':total_price
+            total_price = order_item.quantity * order_item.order_item .price
+            context = {
+                'total_price': total_price
             }
         except Order.DoesNotExist:
             # Handle the case where the OrderItem does not exist
             # For example, redirect to an error page or display an error message
             return HttpResponseRedirect('/error/')
-        
+
         # Redirect the user to a success page
-        return render(self.request, 'menu/calculation_ingredient.html',context) 
+        return render(self.request, 'menu/calculation_ingredient.html', context)
         # order = form.save(commit=False)
         # order.save()
         # # get order item

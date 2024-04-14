@@ -3,6 +3,9 @@ from datetime import timezone
 from typing import Any
 from django.db import models
 
+from django.http import Http404
+from rest_framework.views import APIView
+
 
 class Menu(models.Model):
     name = models.CharField(max_length=20)

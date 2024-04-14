@@ -12,7 +12,7 @@
   </head>
   <body>
 
-
+{% comment %} if user is.authenticated: {% endcomment %}
 <nav class="bg-light-blue-800 sticky top-0 z-50 ">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
@@ -92,7 +92,18 @@
           >Order </a
         >
 
-    
+            {% if user.is_authenticated %}
+            <span class = "navbar-text"> Logged in as {{ user.username }} |</span>
+            <li class="nav-item">
+              <a class="nav-link" href = "/logout">Logout</a>
+            </li>
+
+            {% else %}
+            <li class = "nav-item">
+              <a class = "nav-link" href ="/login"> Login</a>
+            </li>
+            {% endif %}
+
 
     
 

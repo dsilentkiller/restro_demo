@@ -4,8 +4,17 @@ from app.forms import OrderForm, RecipeRequirementForm, InventoryForm, MenuForm
 from django.views.generic import CreateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from django.http import Http404
+from rest_framework.views import APIView
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+# serializer
+from app.models import Menu
+from app.serializers import MenuSerializers
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 app_name = 'app'
 # ================================================Order -============================================================================
 
@@ -13,6 +22,20 @@ app_name = 'app'
 def base(request):
     return render(request, 'app/base.html')
 
+def sign_up(request):
+    # form =RegistrationForm()
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request,user)
+            return redirect('inventory_list')
+        else:
+            form = RegisterForm()
+    # context ={'form':form}
+
+    return render(request,'registration/register.html' ,{'form':form})
+    
 
 class OrderListView(ListView):
     model = Order
@@ -20,7 +43,7 @@ class OrderListView(ListView):
     success_url = reverse_lazy('app:order_list')
 
 
-class OrderCreateView(CreateView):
+class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     form_class = OrderForm
     template_name = 'app/order/order_form.html'
@@ -94,7 +117,7 @@ class RecipeRequirementListView(ListView):
     success_url = reverse_lazy('app:order_list')
 
 
-class RecipeRequirementCreateView(CreateView):
+class RecipeRequirementCreateView(LoginRequiredMixin, CreateView):
     model = RecipeRequirement
     form_class = RecipeRequirementForm
     template_name = 'recipe/recipe_requirement_form.html'
@@ -102,7 +125,7 @@ class RecipeRequirementCreateView(CreateView):
     Order = Order.objects.all()
 
 
-class RecipeRequirementUpdateView(UpdateView):
+class RecipeRequirementUpdateView(LoginRequiredMixin, UpdateView):
     model = RecipeRequirement
     form_class = RecipeRequirementForm
     template_name = 'recipe/recipe_requirement_form.html'
@@ -188,3 +211,51 @@ class MenuDeleteView(DeleteView):
     model = Menu
     template_name = 'app/menu/menu_delete.html'
     success_url = reverse_lazy('app:menu_list')
+
+
+################################ serializers view ###############################
+class MenuList(APIView):
+    '''list all menu or create a new menu'''
+
+    def get(self, request, format=None):
+        menu = Menu.objects.all()
+        serializer = MenuSerializers(menu, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = MenuSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MenuDetail(APIView):
+    '''retrive update or delete menu instance'''
+
+    def get_object(self, pk):
+        try:
+            return Menu.objects.get(pk=pk)
+        except Menu.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        menu = self.get_object(pk)
+        serializer = MenuSerializers(menu)
+        return Response(serializer.data)
+    # put
+
+    def put(self, request, pk, format=None):
+        menu = self.get_object(pk)
+        serializer = MenuSerializers(menu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        menu = self.get_object(pk)
+        menu.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # delete

@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers, viewsets
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('order/', include('order.urls')),
-    # path('', include('inventory.urls')),
-    # path('menu/', include('menu.urls')),
-    # path('',include('restaurant.urls'))
-    path('',include('app.urls')),
+
+    # path('user/', include('user.urls')),
+    path("", include("django.contrib.auth.urls")),
+
+
+    path('app/', include('app.urls')),
 ]
